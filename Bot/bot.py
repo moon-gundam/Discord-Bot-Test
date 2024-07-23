@@ -7,9 +7,10 @@ import os
 # Load environment variables from .env file
 load_dotenv()
 
-# Retrieve API key and bot token from environment variables
+# Retrieve API keys and bot token from environment variables
 OMDB_API_KEY = os.getenv('OMDB_API_KEY')
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+CAT_API_KEY = os.getenv('CAT_API_KEY')  # Cat API key
 
 intents = discord.Intents.default()
 intents.members = True  # Enable member intent
@@ -77,6 +78,21 @@ async def show(ctx, *, title):
         await ctx.send(embed=embed)
     else:
         await ctx.send("TV show not found!")
+
+@bot.command()
+async def cat(ctx):
+    """Generate a random image of a cat."""
+    headers = {
+        'x-api-key': CAT_API_KEY  # Add API key to headers
+    }
+    response = requests.get("https://api.thecatapi.com/v1/images/search", headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        image_url = data[0]['url']
+        await ctx.send(image_url)
+    else:
+        await ctx.send("Sorry, I couldn't fetch a cat image at the moment.")
 
 # Run the bot with the token from environment variables
 bot.run(BOT_TOKEN)
