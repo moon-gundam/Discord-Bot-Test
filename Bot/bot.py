@@ -3,6 +3,7 @@ from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.members = True  # Enable member intent
+intents.message_content = True  # Enable message content intent
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
