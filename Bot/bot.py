@@ -1,9 +1,15 @@
 import discord
 from discord.ext import commands
 import requests
+from dotenv import load_dotenv
+import os
 
-# Replace 'YOUR_OMDB_API_KEY' with your OMDb API key
-OMDB_API_KEY = 'YOUR_OMDB_API_KEY'
+# Load environment variables from .env file
+load_dotenv()
+
+# Retrieve API key and bot token from environment variables
+OMDB_API_KEY = os.getenv('OMDB_API_KEY')
+BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 intents = discord.Intents.default()
 intents.members = True  # Enable member intent
@@ -72,6 +78,5 @@ async def show(ctx, *, title):
     else:
         await ctx.send("TV show not found!")
 
-# Replace 'YOUR_BOT_TOKEN' with your bot's token
-bot.run('YOUR_BOT_TOKEN')
-
+# Run the bot with the token from environment variables
+bot.run(BOT_TOKEN)
